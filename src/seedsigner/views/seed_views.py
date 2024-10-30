@@ -1121,6 +1121,7 @@ class SeedWordsView(View):
             page_index=self.page_index,
             num_pages=num_pages,
             button_data=button_data,
+            colorize_words=self.seed_format_transformer == seed_format_transformers.convert_word_to_11_bits
         ).display()
 
         if selected_menu_num == RET_CODE__BACK_BUTTON:

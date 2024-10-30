@@ -852,6 +852,27 @@ class SeedWordsScreen(WarningEdgesMixin, ButtonListScreen):
     num_pages: int = 3
     is_bottom_list: bool = True
     status_color: str = GUIConstants.DIRE_WARNING_COLOR
+    colorize_words: bool = False
+
+    def draw_seed_word(self, draw, word, number_box_x, number_box_width, font, supersampling_factor, baseline_y, colorize_words):
+        if colorize_words:
+            for i, char in enumerate(word):
+                current_color = [GUIConstants.BODY_FONT_COLOR, GUIConstants.DIRE_WARNING_COLOR, GUIConstants.ACCENT_COLOR][int(i / 3) % 3]
+                draw.text(
+                    ((GUIConstants.LIST_ITEM_PADDING * supersampling_factor) * i + number_box_x + number_box_width + (GUIConstants.COMPONENT_PADDING * supersampling_factor) + (i * GUIConstants.COMPONENT_PADDING * supersampling_factor), baseline_y),
+                    font=font,
+                    text=char,
+                    fill=current_color,
+                    anchor="ls",
+                )
+        else: 
+            draw.text(
+                (number_box_x + number_box_width + (GUIConstants.COMPONENT_PADDING * supersampling_factor), baseline_y),
+                font=font,
+                text=word,
+                fill=GUIConstants.BODY_FONT_COLOR,
+                anchor="ls",  # Left, baSeline
+            )
 
 
     def __post_init__(self):
@@ -909,13 +930,7 @@ class SeedWordsScreen(WarningEdgesMixin, ButtonListScreen):
             )
 
             # Now draw the word
-            draw.text(
-                (number_box_x + number_box_width + (GUIConstants.COMPONENT_PADDING * supersampling_factor), baseline_y),
-                font=font,
-                text=word,
-                fill=GUIConstants.BODY_FONT_COLOR,
-                anchor="ls",  # Left, baSeline
-            )
+            self.draw_seed_word(draw, word, number_box_x, number_box_width, font, supersampling_factor, baseline_y, self.colorize_words)
 
             number_box_y += number_box_height + (int(1.5*GUIConstants.COMPONENT_PADDING) * supersampling_factor)
 
